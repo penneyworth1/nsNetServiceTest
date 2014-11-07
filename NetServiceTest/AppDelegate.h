@@ -11,6 +11,7 @@
 #import "GlobalConstants.h"
 #import "RemoteDevice.h"
 #import <Foundation/Foundation.h>
+#import "AppState.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,NSNetServiceDelegate,NSNetServiceBrowserDelegate,ViewControllerDelegate,NSStreamDelegate>
 {
@@ -21,6 +22,7 @@
     BOOL serverRunning;
     BOOL browsing;
     BOOL advertising;
+    BOOL networkThreadRunning;
 }
 
 @property (strong, nonatomic) UIWindow *window;

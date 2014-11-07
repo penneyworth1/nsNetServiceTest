@@ -61,7 +61,6 @@
         [viewController showThatAppIsBrowsing:false];
         browsing = NO;
     }
-    
 }
 - (void)viewControllerAdvertisePressed
 {
@@ -146,15 +145,15 @@
 
 
 //Net service delegate
-- (void)netServiceDidPublish:(NSNetService *)sender
+- (void)netServiceDidPublish:(NSNetService *)service
 {
     NSLog(@"netServiceDidPublish");
 }
-- (void)netService:(NSNetService *)sender didNotPublish:(NSDictionary *)errorDict
+- (void)netService:(NSNetService *)service didNotPublish:(NSDictionary *)errorDict
 {
     NSLog(@"didNotPublish");
 }
-- (void)netService:(NSNetService *)sender didAcceptConnectionWithInputStream:(NSInputStream *)inputStream outputStream:(NSOutputStream *)outputStream
+- (void)netService:(NSNetService *)service didAcceptConnectionWithInputStream:(NSInputStream *)inputStream outputStream:(NSOutputStream *)outputStream
 {
     NSLog(@"didAcceptConnectionWithInputStream");
 //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -166,23 +165,23 @@
 //        [self openStreams];
 //    });
 }
-- (void)netServiceWillResolve:(NSNetService *)sender
+- (void)netServiceWillResolve:(NSNetService *)service
 {
     NSLog(@"netServiceWillResolve");
 }
-- (void)netServiceDidResolveAddress:(NSNetService *)sender
+- (void)netServiceDidResolveAddress:(NSNetService *)service
 {
     NSLog(@"netServiceDidResolveAddress");
 }
-- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict
+- (void)netService:(NSNetService *)service didNotResolve:(NSDictionary *)errorDict
 {
     NSLog(@"didNotResolve");
 }
-- (void)netServiceDidStop:(NSNetService *)sender
+- (void)netServiceDidStop:(NSNetService *)service
 {
     NSLog(@"netServiceDidStop");
 }
-- (void)netService:(NSNetService *)sender didUpdateTXTRecordData:(NSData *)data
+- (void)netService:(NSNetService *)service didUpdateTXTRecordData:(NSData *)data
 {
     NSLog(@"didUpdateTXTRecordData");
 }
@@ -190,7 +189,7 @@
 //Net service browser delegate
 - (void)netServiceBrowser:(NSNetServiceBrowser *)browser didRemoveService:(NSNetService *)service moreComing:(BOOL)moreComing
 {
-    NSLog(@"didRemoveService");
+    NSLog(@"didRemoveService: %@",service.name);
 }
 - (void)netServiceBrowser:(NSNetServiceBrowser *)browser didFindService:(NSNetService *)service moreComing:(BOOL)moreComing
 {

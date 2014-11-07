@@ -10,28 +10,61 @@
 
 @implementation RemoteDevice
 
+- (void)connectToService
+{
+    BOOL                success;
+    NSInputStream *     inStream;
+    NSOutputStream *    outStream;
+    success = [self.service getInputStream:&inStream outputStream:&outStream];
+    if (!success)
+    {
+
+    }
+    else
+    {
+        self.inputStream  = inStream;
+        self.outputStream = outStream;
+        [self openStreams];
+    }
+}
+-(void)openStreams
+{
+    //[self.inputStream  setDelegate:self];
+    //[self.inputStream  scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+    [self.inputStream  open];
+
+    //[self.outputStream setDelegate:self];
+    //[self.outputStream scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+    [self.outputStream open];
+}
+
+
+
 //Net service delegate
-- (void)netServiceDidPublish:(NSNetService *)sender
+- (void)netServiceDidPublish:(NSNetService *)service
 {
     NSLog(@"%@",[NSString stringWithFormat:@"Service: %@ - %@",self.service.name,@"netServiceDidPublish"]);
 }
-- (void)netService:(NSNetService *)sender didNotPublish:(NSDictionary *)errorDict
+- (void)netService:(NSNetService *)service didNotPublish:(NSDictionary *)errorDict
 {
     NSLog(@"%@",[NSString stringWithFormat:@"Service: %@ - %@",self.service.name,@"didNotPublish"]);
 }
-- (void)netService:(NSNetService *)sender didAcceptConnectionWithInputStream:(NSInputStream *)inputStream outputStream:(NSOutputStream *)outputStream
+- (void)netService:(NSNetService *)service didAcceptConnectionWithInputStream:(NSInputStream *)inputStream outputStream:(NSOutputStream *)outputStream
 {
     
 }
 - (void)netServiceWillResolve:(NSNetService *)service
 {
     NSLog(@"%@",[NSString stringWithFormat:@"Service: %@ - %@",self.service.name,@"netServiceWillResolve"]);
+    NSLog(@"%@",[NSString stringWithFormat:@"Service from parameter: %@ - %@",service.name,@"netServiceWillResolve"]);
 }
 - (void)netServiceDidResolveAddress:(NSNetService *)service
 {
-    NSLog(@"%@",[NSString stringWithFormat:@"Service: %@ - %@",self.service.name,@"netServiceDidResolveAddress"]);
+    NSLog(@"%@",[NSString stringWithFormat:@"Service: \"%@\" - %@",self.service.name,@"netServiceDidResolveAddress"]);
+    NSLog(@"%@",[NSString stringWithFormat:@"Service from parameter: \"%@\" - %@",service.name,@"netServiceDidResolveAddress"]);
     
-    for (NSData *addressData in [service addresses]) {
+    for (NSData *addressData in [service addresses])
+    {
         struct sockaddr *address;
         address = (struct sockaddr*)[addressData bytes];
         switch (address->sa_family)
@@ -63,16 +96,19 @@
             }
         }
     }
+    
+    [self connectToService];
+    
 }
-- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict
+- (void)netService:(NSNetService *)service didNotResolve:(NSDictionary *)errorDict
 {
     NSLog(@"%@",[NSString stringWithFormat:@"Service: %@ - %@",self.service.name,@"didNotResolve"]);
 }
-- (void)netServiceDidStop:(NSNetService *)sender
+- (void)netServiceDidStop:(NSNetService *)service
 {
     NSLog(@"%@",[NSString stringWithFormat:@"Service: %@ - %@",self.service.name,@"netServiceDidStop"]);
 }
-- (void)netService:(NSNetService *)sender didUpdateTXTRecordData:(NSData *)data
+- (void)netService:(NSNetService *)service didUpdateTXTRecordData:(NSData *)data
 {
     NSLog(@"%@",[NSString stringWithFormat:@"Service: %@ - %@",self.service.name,@"didUpdateTXTRecordData"]);
 }

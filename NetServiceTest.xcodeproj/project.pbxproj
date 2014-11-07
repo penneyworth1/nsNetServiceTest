@@ -14,6 +14,8 @@
 		D3541ADF19E5F80200934B25 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3541ADD19E5F80200934B25 /* LaunchScreen.xib */; };
 		D3541AEB19E5F80200934B25 /* NetServiceTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D3541AEA19E5F80200934B25 /* NetServiceTestTests.m */; };
 		D356C8171A0D6AEB00D4AA14 /* RemoteDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D356C8161A0D6AEB00D4AA14 /* RemoteDevice.m */; };
+		D356C81A1A0D833100D4AA14 /* AppState.m in Sources */ = {isa = PBXBuildFile; fileRef = D356C8191A0D833100D4AA14 /* AppState.m */; };
+		D356C81D1A0D885400D4AA14 /* NetworkThread.m in Sources */ = {isa = PBXBuildFile; fileRef = D356C81C1A0D885400D4AA14 /* NetworkThread.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +44,10 @@
 		D3541AF919E6DAF000934B25 /* GlobalConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalConstants.h; sourceTree = "<group>"; };
 		D356C8151A0D6AEB00D4AA14 /* RemoteDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteDevice.h; sourceTree = "<group>"; };
 		D356C8161A0D6AEB00D4AA14 /* RemoteDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteDevice.m; sourceTree = "<group>"; };
+		D356C8181A0D833100D4AA14 /* AppState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppState.h; sourceTree = "<group>"; };
+		D356C8191A0D833100D4AA14 /* AppState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppState.m; sourceTree = "<group>"; };
+		D356C81B1A0D885400D4AA14 /* NetworkThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkThread.h; sourceTree = "<group>"; };
+		D356C81C1A0D885400D4AA14 /* NetworkThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkThread.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,14 +91,18 @@
 			children = (
 				D3541AD219E5F80200934B25 /* AppDelegate.h */,
 				D3541AD319E5F80200934B25 /* AppDelegate.m */,
+				D356C8181A0D833100D4AA14 /* AppState.h */,
+				D356C8191A0D833100D4AA14 /* AppState.m */,
 				D3541AF919E6DAF000934B25 /* GlobalConstants.h */,
 				D3541ADB19E5F80200934B25 /* Images.xcassets */,
 				D3541ADD19E5F80200934B25 /* LaunchScreen.xib */,
+				D356C8151A0D6AEB00D4AA14 /* RemoteDevice.h */,
+				D356C8161A0D6AEB00D4AA14 /* RemoteDevice.m */,
 				D3541ACE19E5F80200934B25 /* Supporting Files */,
 				D3541AD519E5F80200934B25 /* ViewController.h */,
 				D3541AD619E5F80200934B25 /* ViewController.m */,
-				D356C8151A0D6AEB00D4AA14 /* RemoteDevice.h */,
-				D356C8161A0D6AEB00D4AA14 /* RemoteDevice.m */,
+				D356C81B1A0D885400D4AA14 /* NetworkThread.h */,
+				D356C81C1A0D885400D4AA14 /* NetworkThread.m */,
 			);
 			path = NetServiceTest;
 			sourceTree = "<group>";
@@ -222,8 +232,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D356C81D1A0D885400D4AA14 /* NetworkThread.m in Sources */,
 				D3541AD719E5F80200934B25 /* ViewController.m in Sources */,
 				D3541AD419E5F80200934B25 /* AppDelegate.m in Sources */,
+				D356C81A1A0D833100D4AA14 /* AppState.m in Sources */,
 				D356C8171A0D6AEB00D4AA14 /* RemoteDevice.m in Sources */,
 				D3541AD119E5F80200934B25 /* main.m in Sources */,
 			);

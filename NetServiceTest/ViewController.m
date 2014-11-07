@@ -107,6 +107,8 @@
     btnSendMessage.frame = CGRectMake(10, 300, 200, 30);
     
     
+    AppState* appState = [AppState getInstance];
+    appState.vc = self;
 }
 
 -(void)setDeviceInfoLabelText:(NSString*)newText
