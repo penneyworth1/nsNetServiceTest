@@ -24,7 +24,10 @@
     viewController.delegate = self;
     [self.window setRootViewController:viewController];
     
-    remoteDevices = [[NSMutableArray alloc] init];
+    appState = [AppState getInstance];
+    networkThread = [[NetworkThread alloc] init];
+    //[networkThread start];
+    
     serverRunning = NO;
     browsing = NO;
     advertising = NO;
@@ -57,7 +60,7 @@
     else
     {
         [netServiceBrowser stop];
-        [remoteDevices removeAllObjects];
+        [appState.remoteDevices removeAllObjects];
         [viewController showThatAppIsBrowsing:false];
         browsing = NO;
     }
@@ -77,8 +80,31 @@
 {
     NSLog(@"viewControllerDisconnectPressed");
 }
+- (void)viewControllerReceive
+{
+    for(RemoteDevice* remoteDevice in appState.remoteDevices)
+    {
+        [remoteDevice receiveSomeData];
+    }
+}
 - (void)viewControllerSend:(NSString*)message
 {
+    @synchronized(appState.remoteDeviceListLock)
+    {
+        //TO REMOVE
+        void * bytes = malloc(1000);
+        NSData * data = [NSData dataWithBytes:bytes length:1000];
+        
+        for(RemoteDevice* remoteDevice in appState.remoteDevices)
+        {
+            [remoteDevice addDataToSend:data];
+        }
+        
+        //TO REMOVE
+        //free(bytes);
+    }
+    
+    
 //    if([self.outputStream streamStatus] == NSStreamStatusOpen && [self.inputStream streamStatus] == NSStreamStatusOpen)
 //    {
 //        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -99,36 +125,36 @@
 //    }
 }
 
-- (void)connectToService
-{
-//    BOOL                success;
-//    NSInputStream *     inStream;
-//    NSOutputStream *    outStream;
-//    
-//    success = [self.remoteService getInputStream:&inStream outputStream:&outStream];
-//    
-//    if (!success)
-//    {
-//        
-//    }
-//    else
-//    {
-//        self.inputStream  = inStream;
-//        self.outputStream = outStream;
-//        [self openStreams];
-//    }
-}
+//- (void)connectToService
+//{
+////    BOOL                success;
+////    NSInputStream *     inStream;
+////    NSOutputStream *    outStream;
+////    
+////    success = [self.remoteService getInputStream:&inStream outputStream:&outStream];
+////    
+////    if (!success)
+////    {
+////        
+////    }
+////    else
+////    {
+////        self.inputStream  = inStream;
+////        self.outputStream = outStream;
+////        [self openStreams];
+////    }
+//}
 
--(void)openStreams
-{
-//    [self.inputStream  setDelegate:self];
-//    [self.inputStream  scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
-//    [self.inputStream  open];
-//    
-//    [self.outputStream setDelegate:self];
-//    [self.outputStream scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
-//    [self.outputStream open];
-}
+//-(void)openStreams
+//{
+////    [self.inputStream  setDelegate:self];
+////    [self.inputStream  scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+////    [self.inputStream  open];
+////    
+////    [self.outputStream setDelegate:self];
+////    [self.outputStream scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+////    [self.outputStream open];
+//}
 - (void)closeStreams
 {
 //    assert( (self.inputStream != nil) == (self.outputStream != nil) );      // should either have both or neither
@@ -156,14 +182,52 @@
 - (void)netService:(NSNetService *)service didAcceptConnectionWithInputStream:(NSInputStream *)inputStream outputStream:(NSOutputStream *)outputStream
 {
     NSLog(@"didAcceptConnectionWithInputStream");
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        //[self.server stop];
-//        //self.serverRunning = NO;
-//        self.inputStream = inputStream;
-//        self.outputStream = outputStream;
-//        
-//        [self openStreams];
-//    });
+
+    @synchronized(appState.remoteDeviceListLock)
+    {
+        bool remoteServiceAlreadyAdded = false;
+        for(RemoteDevice* remoteDevice in appState.remoteDevices)
+        {
+            if([remoteDevice.service.name isEqualToString:service.name])
+                remoteServiceAlreadyAdded = true;
+        }
+        
+        if(!remoteServiceAlreadyAdded)
+        {
+            RemoteDevice* remoteService = [[RemoteDevice alloc] init];
+            remoteService.service = service;
+            remoteService.inputStream = inputStream;
+            remoteService.outputStream = outputStream;
+            bool streamsConnectedSuccessfully = [remoteService openStreams];
+            if(streamsConnectedSuccessfully)
+                NSLog(@"Added remote device from the advertiser side! - %@", service.name);
+            else
+                NSLog(@"FAILED in adding remote device from the advertiser side! streams could not open - %@", service.name);
+                
+            
+            //service.delegate = self;
+            
+            [appState.remoteDevices addObject:remoteService];
+            
+            
+            
+            //Right now we will not resolve services from an accept on the advertiser side, but only from the browser side.
+            //[service resolveWithTimeout:2.f];
+        }
+        
+        
+        //Display all discovered services on screen
+        NSMutableString* foundServiceNames = [NSMutableString string];
+        for(int i=0;i<[appState.remoteDevices count];i++)
+        {
+            RemoteDevice* remoteDevice = [appState.remoteDevices objectAtIndex:i];
+            [foundServiceNames appendString:remoteDevice.service.name];
+            if(i != ([appState.remoteDevices count]-1)) [foundServiceNames appendString:@","];
+        }
+        [viewController setDeviceInfoLabelText:foundServiceNames];
+        
+        NSLog(@"didFindService other than self");
+    }
 }
 - (void)netServiceWillResolve:(NSNetService *)service
 {
@@ -195,23 +259,28 @@
 {
     if(![localService isEqual:service]) //ignore your own service
     {
-        RemoteDevice* remoteService = [[RemoteDevice alloc] init];
-        remoteService.service = service;
-        service.delegate = remoteService;
-        
-        [remoteDevices addObject:remoteService];
-        [service resolveWithTimeout:2.f];
-        
-        NSMutableString* foundServiceNames = [NSMutableString string];
-        for(int i=0;i<[remoteDevices count];i++)
+        @synchronized(appState.remoteDeviceListLock)
         {
-            RemoteDevice* rd = [remoteDevices objectAtIndex:i];
-            [foundServiceNames appendString:rd.service.name];
-            if(i != ([remoteDevices count]-1)) [foundServiceNames appendString:@","];
+            RemoteDevice* remoteService = [[RemoteDevice alloc] init];
+            remoteService.service = service;
+            service.delegate = remoteService;
+            
+            [appState.remoteDevices addObject:remoteService];
+            [service resolveWithTimeout:2.f];
+            
+            
+            //Display all discovered services on screen
+            NSMutableString* foundServiceNames = [NSMutableString string];
+            for(int i=0;i<[appState.remoteDevices count];i++)
+            {
+                RemoteDevice* rd = [appState.remoteDevices objectAtIndex:i];
+                [foundServiceNames appendString:rd.service.name];
+                if(i != ([appState.remoteDevices count]-1)) [foundServiceNames appendString:@","];
+            }
+            [viewController setDeviceInfoLabelText:foundServiceNames];
+            
+            NSLog(@"didFindService other than self");
         }
-        [viewController setDeviceInfoLabelText:foundServiceNames];
-        
-        NSLog(@"didFindService other than self");
     }
 }
 - (void)netServiceBrowser:(NSNetServiceBrowser *)browser didNotSearch:(NSDictionary *)errorDict
@@ -223,43 +292,43 @@
 
 
 //Stream delegate
-- (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode
-{
-    switch(eventCode)
-    {
-        case NSStreamEventOpenCompleted:
-        {
-            NSLog(@"NSStreamEventOpenCompleted");
-        } break;
-        case NSStreamEventHasSpaceAvailable:
-        {
-            NSLog(@"NSStreamEventHasSpaceAvailable");
-        } break;
-        case NSStreamEventHasBytesAvailable:
-        {
-            uint8_t buf[30];
-            NSInteger   bytesRead;
-            
-            //bytesRead = [self.inputStream read:buf maxLength:sizeof(uint8_t)];
-            NSString* receivedString = [[NSString alloc] initWithBytes:buf length:30 encoding:NSUTF8StringEncoding];
-            
-            [viewController setDeviceInfoLabelText:receivedString];
-            NSLog(@"got bytes");
-        } break;
-        case NSStreamEventErrorOccurred:
-        {
-            NSLog(@"NSStreamEventErrorOccurred");
-        } break;
-        case NSStreamEventEndEncountered:
-        {
-            NSLog(@"NSStreamEventEndEncountered");
-        } break;
-        case NSStreamEventNone:
-        {
-            NSLog(@"NSStreamEventNone");
-        } break;
-    }
-}
+//- (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode
+//{
+//    switch(eventCode)
+//    {
+//        case NSStreamEventOpenCompleted:
+//        {
+//            NSLog(@"NSStreamEventOpenCompleted");
+//        } break;
+//        case NSStreamEventHasSpaceAvailable:
+//        {
+//            NSLog(@"NSStreamEventHasSpaceAvailable");
+//        } break;
+//        case NSStreamEventHasBytesAvailable:
+//        {
+//            uint8_t buf[30];
+//            NSInteger   bytesRead;
+//            
+//            //bytesRead = [self.inputStream read:buf maxLength:sizeof(uint8_t)];
+//            NSString* receivedString = [[NSString alloc] initWithBytes:buf length:30 encoding:NSUTF8StringEncoding];
+//            
+//            [viewController setDeviceInfoLabelText:receivedString];
+//            NSLog(@"got bytes");
+//        } break;
+//        case NSStreamEventErrorOccurred:
+//        {
+//            NSLog(@"NSStreamEventErrorOccurred");
+//        } break;
+//        case NSStreamEventEndEncountered:
+//        {
+//            NSLog(@"NSStreamEventEndEncountered");
+//        } break;
+//        case NSStreamEventNone:
+//        {
+//            NSLog(@"NSStreamEventNone");
+//        } break;
+//    }
+//}
 
 
 

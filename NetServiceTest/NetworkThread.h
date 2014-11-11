@@ -7,12 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AppState.h"
+#import "RemoteDevice.h"
 
 @interface NetworkThread : NSObject
 {
     bool threadRunning;
+    bool foundWorkToDo;
 }
 
--(void)performNetworkActions;
+-(void)start;
 
 @end

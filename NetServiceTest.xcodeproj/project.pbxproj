@@ -16,6 +16,7 @@
 		D356C8171A0D6AEB00D4AA14 /* RemoteDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D356C8161A0D6AEB00D4AA14 /* RemoteDevice.m */; };
 		D356C81A1A0D833100D4AA14 /* AppState.m in Sources */ = {isa = PBXBuildFile; fileRef = D356C8191A0D833100D4AA14 /* AppState.m */; };
 		D356C81D1A0D885400D4AA14 /* NetworkThread.m in Sources */ = {isa = PBXBuildFile; fileRef = D356C81C1A0D885400D4AA14 /* NetworkThread.m */; };
+		D356C81F1A111E7B00D4AA14 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D356C81E1A111E7B00D4AA14 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		D356C8191A0D833100D4AA14 /* AppState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppState.m; sourceTree = "<group>"; };
 		D356C81B1A0D885400D4AA14 /* NetworkThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkThread.h; sourceTree = "<group>"; };
 		D356C81C1A0D885400D4AA14 /* NetworkThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkThread.m; sourceTree = "<group>"; };
+		D356C81E1A111E7B00D4AA14 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D356C81F1A111E7B00D4AA14 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +74,7 @@
 		D3541AC219E5F80200934B25 = {
 			isa = PBXGroup;
 			children = (
+				D356C8201A111F0900D4AA14 /* Frameworks */,
 				D3541ACD19E5F80200934B25 /* NetServiceTest */,
 				D3541AE719E5F80200934B25 /* NetServiceTestTests */,
 				D3541ACC19E5F80200934B25 /* Products */,
@@ -96,13 +100,13 @@
 				D3541AF919E6DAF000934B25 /* GlobalConstants.h */,
 				D3541ADB19E5F80200934B25 /* Images.xcassets */,
 				D3541ADD19E5F80200934B25 /* LaunchScreen.xib */,
+				D356C81B1A0D885400D4AA14 /* NetworkThread.h */,
+				D356C81C1A0D885400D4AA14 /* NetworkThread.m */,
 				D356C8151A0D6AEB00D4AA14 /* RemoteDevice.h */,
 				D356C8161A0D6AEB00D4AA14 /* RemoteDevice.m */,
 				D3541ACE19E5F80200934B25 /* Supporting Files */,
 				D3541AD519E5F80200934B25 /* ViewController.h */,
 				D3541AD619E5F80200934B25 /* ViewController.m */,
-				D356C81B1A0D885400D4AA14 /* NetworkThread.h */,
-				D356C81C1A0D885400D4AA14 /* NetworkThread.m */,
 			);
 			path = NetServiceTest;
 			sourceTree = "<group>";
@@ -131,6 +135,14 @@
 				D3541AE919E5F80200934B25 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D356C8201A111F0900D4AA14 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D356C81E1A111E7B00D4AA14 /* QuartzCore.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -353,6 +365,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = NetServiceTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -363,6 +376,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = NetServiceTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -20,7 +20,8 @@
         {
             appState = [[self alloc] init];
         }
-        appState.networkThread = [[NetworkThread alloc] init];
+        appState.remoteDevices = [[NSMutableArray alloc] init];
+        appState.remoteDeviceListLock = [[NSObject alloc] init];
     }
     return appState;
 }

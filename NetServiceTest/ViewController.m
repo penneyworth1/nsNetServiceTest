@@ -106,9 +106,16 @@
     [btnSendMessage addTarget:self action:@selector(sendButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     btnSendMessage.frame = CGRectMake(10, 300, 200, 30);
     
-    
-    AppState* appState = [AppState getInstance];
-    appState.vc = self;
+    btnReceive = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.view addSubview:btnReceive];
+    [btnReceive setBackgroundColor:[UIColor blackColor]];
+    [btnReceive setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btnReceive setTitle:@"Receive" forState:UIControlStateNormal];
+    [btnReceive.titleLabel setFont:[UIFont fontWithName:@"ArialMT" size:20]];
+    btnReceive.clipsToBounds = YES;
+    btnReceive.layer.cornerRadius = 15.0f;
+    [btnReceive addTarget:self action:@selector(receiveButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    btnReceive.frame = CGRectMake(10, 340, 200, 30);
 }
 
 -(void)setDeviceInfoLabelText:(NSString*)newText
@@ -152,6 +159,10 @@
 -(void)sendButtonClicked
 {
     [self.delegate viewControllerSend:tfMessageToSend.text];
+}
+-(void)receiveButtonClicked
+{
+    [self.delegate viewControllerReceive];
 }
 -(void)disconnectButtonClicked
 {

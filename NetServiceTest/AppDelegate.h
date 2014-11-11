@@ -12,12 +12,16 @@
 #import "RemoteDevice.h"
 #import <Foundation/Foundation.h>
 #import "AppState.h"
+#import "NetworkThread.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,NSNetServiceDelegate,NSNetServiceBrowserDelegate,ViewControllerDelegate,NSStreamDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,NSNetServiceDelegate,NSNetServiceBrowserDelegate,ViewControllerDelegate>
 {
     ViewController *viewController;
     NSNetService* localService;
-    NSMutableArray* remoteDevices;
+    
+    AppState* appState;
+    NetworkThread* networkThread;
+    
     NSNetServiceBrowser* netServiceBrowser;
     BOOL serverRunning;
     BOOL browsing;

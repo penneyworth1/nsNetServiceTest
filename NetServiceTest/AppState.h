@@ -11,7 +11,8 @@
 
 @interface AppState : NSObject
 
-@property NetworkThread* networkThread;
+@property NSMutableArray* remoteDevices;
+@property NSObject* remoteDeviceListLock;
 
 +(id)getInstance;
 

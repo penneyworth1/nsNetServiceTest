@@ -25,6 +25,7 @@
     UILabel* lblReceivedMessage;
     UITextField* tfMessageToSend;
     UIButton* btnSendMessage;
+    UIButton* btnReceive;
 }
 
 @property (nonatomic, weak, readwrite) id<ViewControllerDelegate> delegate;
@@ -42,5 +43,6 @@
 - (void)viewControllerBrowsePressed;
 - (void)viewControllerAdvertisePressed;
 - (void)viewControllerSend:(NSString*)message;
+- (void)viewControllerReceive;
 @end
 
