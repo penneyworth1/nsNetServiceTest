@@ -11,6 +11,7 @@
 #import "AppState.h"
 #import <netinet/in.h>
 #include <arpa/inet.h>
+#include "Util.h"
 
 @interface RemoteDevice : NSObject <NSNetServiceDelegate>
 {

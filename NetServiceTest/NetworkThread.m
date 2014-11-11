@@ -17,6 +17,7 @@
     {
         threadRunning = false;
         foundWorkToDo = false;
+        sleepTimeLength = 0.0;
     }
     return self;
 }
@@ -28,22 +29,34 @@
         AppState* appState = [AppState getInstance];
         while(threadRunning)
         {
-            NSLog(@"network thread firing");
+            //NSLog(@"network thread firing");
             
             foundWorkToDo = false;
             for(RemoteDevice* remoteDevice in appState.remoteDevices)
             {
-                if([remoteDevice hasBytesToWrite])
+                if(remoteDevice.streamsOpen)
                 {
-                    foundWorkToDo = true;
-                    [remoteDevice sendSomeData];
+                    if([remoteDevice hasBytesToWrite])
+                    {
+                        foundWorkToDo = true;
+                        [remoteDevice sendSomeData];
+                    }
+                    if([remoteDevice receiveSomeData])
+                        foundWorkToDo = true;
                 }
-                if([remoteDevice receiveSomeData])
-                    foundWorkToDo = true;
             }
         
-            if(!foundWorkToDo)
-                [NSThread sleepForTimeInterval:1.5];
+            if(foundWorkToDo) //If there is nothing to do, slowly increase the sleep time in between polls.
+            {
+                sleepTimeLength = 0;
+            }
+            else
+            {
+                if(sleepTimeLength < 1)
+                    sleepTimeLength += .01;
+                [NSThread sleepForTimeInterval:sleepTimeLength];
+                //NSLog(@"sleep time: %f", sleepTimeLength);
+            }
         }
     });
     

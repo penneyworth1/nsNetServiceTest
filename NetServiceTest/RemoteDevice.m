@@ -39,12 +39,12 @@
     {
         [bytesToWrite appendData:data];
         
-        NSLog(@"bytes to write length: %lu",(unsigned long)[bytesToWrite length]);
+        //NSLog(@"bytes to write length: %lu",(unsigned long)[bytesToWrite length]);
 
     }
     
     //REMOVE
-    [self sendSomeData];
+    //[self sendSomeData];
 }
 
 -(void)sendSomeData
@@ -54,7 +54,7 @@
         NSInteger bytesWritten = [self.outputStream write:[bytesToWrite bytes] maxLength:[bytesToWrite length]];
         if(bytesWritten > 0)
         {
-            NSLog(@"%ld bytes written - %@",(long)bytesWritten,self.service.name);
+            //NSLog(@"%ld bytes written - %@",(long)bytesWritten,self.service.name);
             [bytesToWrite replaceBytesInRange:NSMakeRange(0, bytesWritten) withBytes:NULL length:0];
         }
     }
@@ -64,16 +64,18 @@
 {
     if(![self.inputStream hasBytesAvailable])
     {
-        NSLog(@"No bytes available to read");
+        //NSLog(@"No bytes available to read");
         return false;
     }
     
-    uint8_t buf[512];
-    NSInteger bytesRead = [self.inputStream read:buf maxLength:512];
-    NSLog(@"%ld bytes read - %@",(long)bytesRead,self.service.name);
+    int readBufferSize = 512;
+    uint8_t buf[readBufferSize];
+    NSInteger bytesRead = [self.inputStream read:buf maxLength:readBufferSize];
+    //NSLog(@"%ld bytes read - %@",(long)bytesRead,self.service.name);
     
     if(bytesRead>0)
     {
+        [Util setBytesReadLabel:bytesRead];
         return true;
     }
     else
@@ -90,20 +92,22 @@
     
     while((CACurrentMediaTime() - startTime) < 5 && !self.streamsOpen)
     {
-        NSLog(@"elapsed time trying to open streams: %f",CACurrentMediaTime() - startTime);
-        NSLog(@"output stream status: %i",(int)[self.outputStream streamStatus]);
-        NSLog(@"input stream status: %i",(int)[self.inputStream streamStatus]);
+        //NSLog(@"elapsed time trying to open streams: %f",CACurrentMediaTime() - startTime);
+        //NSLog(@"output stream status: %i",(int)[self.outputStream streamStatus]);
+        //NSLog(@"input stream status: %i",(int)[self.inputStream streamStatus]);
         if([self.outputStream streamStatus] == NSStreamStatusOpen && [self.inputStream streamStatus] == NSStreamStatusOpen)
         {
             self.streamsOpen = true;
-            NSLog(@"tcp connection established");
+            [Util addToInfoLabel:[NSString stringWithFormat:@"tcp connection established - %@",self.service.name]];
+            //NSLog(@"tcp connection established");
         }
     }
     if(self.streamsOpen)
         return true;
     else
     {
-        NSLog(@"Streams FAILED to open after the specified time!");
+        [Util addToInfoLabel:[NSString stringWithFormat:@"Streams FAILED to open after the specified time! - %@",self.service.name]];
+        //NSLog(@"Streams FAILED to open after the specified time!");
         return false;
     }
 }

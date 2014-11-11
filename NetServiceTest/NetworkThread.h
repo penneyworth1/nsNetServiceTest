@@ -14,6 +14,7 @@
 {
     bool threadRunning;
     bool foundWorkToDo;
+    float sleepTimeLength;
 }
 
 -(void)start;

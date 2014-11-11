@@ -73,15 +73,6 @@
     [btnAdvertise addTarget:self action:@selector(advertiseButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     btnAdvertise.frame = CGRectMake(10, 180, 200, 30);
     
-    
-    
-    lblReceivedMessage = [[UILabel alloc] init];
-    lblReceivedMessage.textColor = [UIColor whiteColor];
-    lblReceivedMessage.text = @"waiting...";
-    [lblReceivedMessage setFont:[UIFont fontWithName:@"ArialMT" size:25]];
-    [self.view addSubview:lblReceivedMessage];
-    lblReceivedMessage.frame = CGRectMake(10, 220, 200, 30);
-    
     tfMessageToSend = [[UITextField alloc] init];
     [self.view addSubview:tfMessageToSend];
     [tfMessageToSend setFont:[UIFont fontWithName:@"ArialMT" size:20]];
@@ -93,7 +84,7 @@
     tfMessageToSend.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     tfMessageToSend.textAlignment = NSTextAlignmentCenter;
     tfMessageToSend.delegate = self;
-    tfMessageToSend.frame = CGRectMake(10, 260, 200, 30);
+    tfMessageToSend.frame = CGRectMake(10, 220, 200, 30);
     
     btnSendMessage = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.view addSubview:btnSendMessage];
@@ -104,23 +95,45 @@
     btnSendMessage.clipsToBounds = YES;
     btnSendMessage.layer.cornerRadius = 15.0f;
     [btnSendMessage addTarget:self action:@selector(sendButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    btnSendMessage.frame = CGRectMake(10, 300, 200, 30);
+    btnSendMessage.frame = CGRectMake(10, 260, 200, 30);
     
-    btnReceive = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.view addSubview:btnReceive];
-    [btnReceive setBackgroundColor:[UIColor blackColor]];
-    [btnReceive setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [btnReceive setTitle:@"Receive" forState:UIControlStateNormal];
-    [btnReceive.titleLabel setFont:[UIFont fontWithName:@"ArialMT" size:20]];
-    btnReceive.clipsToBounds = YES;
-    btnReceive.layer.cornerRadius = 15.0f;
-    [btnReceive addTarget:self action:@selector(receiveButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    btnReceive.frame = CGRectMake(10, 340, 200, 30);
+    
+    lblBytesReceived = [[UILabel alloc] init];
+    lblBytesReceived.textColor = [UIColor whiteColor];
+    lblBytesReceived.text = @"Bytes received:";
+    [lblBytesReceived setFont:[UIFont fontWithName:@"ArialMT" size:20]];
+    [self.view addSubview:lblBytesReceived];
+    lblBytesReceived.frame = CGRectMake(10, 300, 200, 30);
+    
+    lblBytesReceivedValue = [[UILabel alloc] init];
+    lblBytesReceivedValue.textColor = [UIColor whiteColor];
+    lblBytesReceivedValue.text = @"0";
+    [lblBytesReceivedValue setFont:[UIFont fontWithName:@"ArialMT" size:20]];
+    [self.view addSubview:lblBytesReceivedValue];
+    lblBytesReceivedValue.frame = CGRectMake(200, 300, 200, 30);
+    
+    lblInfo = [[UILabel alloc] init];
+    lblInfo.textColor = [UIColor whiteColor];
+    lblInfo.backgroundColor = [UIColor grayColor];
+    lblInfo.text = @"";
+    [lblInfo setFont:[UIFont fontWithName:@"ArialMT" size:12]];
+    [self.view addSubview:lblInfo];
+    lblInfo.frame = CGRectMake(10, 340, 300, 220);
+    lblInfo.lineBreakMode = NSLineBreakByWordWrapping;
+    lblInfo.numberOfLines = 0;
 }
 
+-(void)addToInfoText:(NSString*)newText
+{
+    lblInfo.text = [NSString stringWithFormat:@"%@ %@",lblInfo.text,newText];
+}
 -(void)setDeviceInfoLabelText:(NSString*)newText
 {
     lblFoundDevicesInfo.text = newText;
+}
+-(void)setBytesReceivedValueText:(NSString*)newText
+{
+    lblBytesReceivedValue.text = newText;
 }
 -(void)showThatAppIsAdvertising:(bool)advertising
 {
@@ -159,10 +172,6 @@
 -(void)sendButtonClicked
 {
     [self.delegate viewControllerSend:tfMessageToSend.text];
-}
--(void)receiveButtonClicked
-{
-    [self.delegate viewControllerReceive];
 }
 -(void)disconnectButtonClicked
 {

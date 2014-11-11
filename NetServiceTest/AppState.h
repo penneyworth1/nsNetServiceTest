@@ -13,6 +13,8 @@
 
 @property NSMutableArray* remoteDevices;
 @property NSObject* remoteDeviceListLock;
+@property long totalBytesReceivedFromAllDevices;
+@property id viewControllerReference;
 
 +(id)getInstance;
 

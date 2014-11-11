@@ -22,15 +22,19 @@
     UIButton* btnDisconnect;
     UIButton* btnBrowse;
     UIButton* btnAdvertise;
-    UILabel* lblReceivedMessage;
     UITextField* tfMessageToSend;
     UIButton* btnSendMessage;
     UIButton* btnReceive;
+    UILabel* lblBytesReceived;
+    UILabel* lblBytesReceivedValue;
+    UILabel* lblInfo;
 }
 
 @property (nonatomic, weak, readwrite) id<ViewControllerDelegate> delegate;
 
 -(void)setDeviceInfoLabelText:(NSString*)newText;
+-(void)addToInfoText:(NSString*)newText;
+-(void)setBytesReceivedValueText:(NSString*)newText;
 -(void)showThatAppIsAdvertising:(bool)advertising;
 -(void)showThatAppIsBrowsing:(bool)browsing;
 
@@ -43,6 +47,5 @@
 - (void)viewControllerBrowsePressed;
 - (void)viewControllerAdvertisePressed;
 - (void)viewControllerSend:(NSString*)message;
-- (void)viewControllerReceive;
 @end
 

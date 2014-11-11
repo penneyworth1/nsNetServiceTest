@@ -25,8 +25,9 @@
     [self.window setRootViewController:viewController];
     
     appState = [AppState getInstance];
+    appState.viewControllerReference = viewController;
     networkThread = [[NetworkThread alloc] init];
-    //[networkThread start];
+    [networkThread start];
     
     serverRunning = NO;
     browsing = NO;
@@ -78,22 +79,16 @@
 }
 - (void)viewControllerDisconnectPressed
 {
-    NSLog(@"viewControllerDisconnectPressed");
-}
-- (void)viewControllerReceive
-{
-    for(RemoteDevice* remoteDevice in appState.remoteDevices)
-    {
-        [remoteDevice receiveSomeData];
-    }
+    //NSLog(@"viewControllerDisconnectPressed");
 }
 - (void)viewControllerSend:(NSString*)message
 {
     @synchronized(appState.remoteDeviceListLock)
     {
         //TO REMOVE
-        void * bytes = malloc(1000);
-        NSData * data = [NSData dataWithBytes:bytes length:1000];
+        int sendByteArraySize = 10000000;
+        void * bytes = malloc(sendByteArraySize);
+        NSData * data = [NSData dataWithBytes:bytes length:sendByteArraySize];
         
         for(RemoteDevice* remoteDevice in appState.remoteDevices)
         {
@@ -101,7 +96,7 @@
         }
         
         //TO REMOVE
-        //free(bytes);
+        free(bytes);
     }
     
     
@@ -173,15 +168,15 @@
 //Net service delegate
 - (void)netServiceDidPublish:(NSNetService *)service
 {
-    NSLog(@"netServiceDidPublish");
+    //NSLog(@"netServiceDidPublish");
 }
 - (void)netService:(NSNetService *)service didNotPublish:(NSDictionary *)errorDict
 {
-    NSLog(@"didNotPublish");
+    //NSLog(@"didNotPublish");
 }
 - (void)netService:(NSNetService *)service didAcceptConnectionWithInputStream:(NSInputStream *)inputStream outputStream:(NSOutputStream *)outputStream
 {
-    NSLog(@"didAcceptConnectionWithInputStream");
+    //NSLog(@"didAcceptConnectionWithInputStream");
 
     @synchronized(appState.remoteDeviceListLock)
     {
@@ -200,10 +195,10 @@
             remoteService.outputStream = outputStream;
             bool streamsConnectedSuccessfully = [remoteService openStreams];
             if(streamsConnectedSuccessfully)
-                NSLog(@"Added remote device from the advertiser side! - %@", service.name);
+                [Util addToInfoLabel:[NSString stringWithFormat:@"Added remote device from the advertiser side!"]];//NSLog(@"Added remote device from the advertiser side! - %@", service.name);
             else
-                NSLog(@"FAILED in adding remote device from the advertiser side! streams could not open - %@", service.name);
-                
+                [Util addToInfoLabel:[NSString stringWithFormat:@"FAILED in adding remote device from the advertiser side! streams could not open"]];//NSLog(@"FAILED in adding remote device from the advertiser side! streams could not open - %@", service.name);
+            
             
             //service.delegate = self;
             
@@ -226,34 +221,34 @@
         }
         [viewController setDeviceInfoLabelText:foundServiceNames];
         
-        NSLog(@"didFindService other than self");
+        //NSLog(@"didFindService other than self");
     }
 }
 - (void)netServiceWillResolve:(NSNetService *)service
 {
-    NSLog(@"netServiceWillResolve");
+    //NSLog(@"netServiceWillResolve");
 }
 - (void)netServiceDidResolveAddress:(NSNetService *)service
 {
-    NSLog(@"netServiceDidResolveAddress");
+    //NSLog(@"netServiceDidResolveAddress");
 }
 - (void)netService:(NSNetService *)service didNotResolve:(NSDictionary *)errorDict
 {
-    NSLog(@"didNotResolve");
+    //NSLog(@"didNotResolve");
 }
 - (void)netServiceDidStop:(NSNetService *)service
 {
-    NSLog(@"netServiceDidStop");
+    //NSLog(@"netServiceDidStop");
 }
 - (void)netService:(NSNetService *)service didUpdateTXTRecordData:(NSData *)data
 {
-    NSLog(@"didUpdateTXTRecordData");
+    //NSLog(@"didUpdateTXTRecordData");
 }
 
 //Net service browser delegate
 - (void)netServiceBrowser:(NSNetServiceBrowser *)browser didRemoveService:(NSNetService *)service moreComing:(BOOL)moreComing
 {
-    NSLog(@"didRemoveService: %@",service.name);
+    //NSLog(@"didRemoveService: %@",service.name);
 }
 - (void)netServiceBrowser:(NSNetServiceBrowser *)browser didFindService:(NSNetService *)service moreComing:(BOOL)moreComing
 {
@@ -279,13 +274,13 @@
             }
             [viewController setDeviceInfoLabelText:foundServiceNames];
             
-            NSLog(@"didFindService other than self");
+            //NSLog(@"didFindService other than self");
         }
     }
 }
 - (void)netServiceBrowser:(NSNetServiceBrowser *)browser didNotSearch:(NSDictionary *)errorDict
 {
-    NSLog(@"didNotSearch");
+    //NSLog(@"didNotSearch");
 }
 
 

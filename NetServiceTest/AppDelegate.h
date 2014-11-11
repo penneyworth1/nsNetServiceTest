@@ -13,10 +13,11 @@
 #import <Foundation/Foundation.h>
 #import "AppState.h"
 #import "NetworkThread.h"
+#import "Util.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,NSNetServiceDelegate,NSNetServiceBrowserDelegate,ViewControllerDelegate>
 {
-    ViewController *viewController;
+    ViewController* viewController;
     NSNetService* localService;
     
     AppState* appState;
