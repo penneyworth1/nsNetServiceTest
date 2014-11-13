@@ -19,6 +19,8 @@
 		D356C81F1A111E7B00D4AA14 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D356C81E1A111E7B00D4AA14 /* QuartzCore.framework */; };
 		D3790A811A12B78900720375 /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = D3790A801A12B78900720375 /* Util.m */; };
 		D3790A841A12D2F600720375 /* DataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D3790A831A12D2F600720375 /* DataHandler.m */; };
+		D3790A871A13BE6900720375 /* ByteUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = D3790A861A13BE6800720375 /* ByteUtil.m */; };
+		D3790A8A1A13BEBA00720375 /* NetMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D3790A891A13BEBA00720375 /* NetMessage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,10 @@
 		D3790A801A12B78900720375 /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
 		D3790A821A12D2F600720375 /* DataHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataHandler.h; sourceTree = "<group>"; };
 		D3790A831A12D2F600720375 /* DataHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataHandler.m; sourceTree = "<group>"; };
+		D3790A851A13BE6800720375 /* ByteUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ByteUtil.h; sourceTree = "<group>"; };
+		D3790A861A13BE6800720375 /* ByteUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ByteUtil.m; sourceTree = "<group>"; };
+		D3790A881A13BEBA00720375 /* NetMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetMessage.h; sourceTree = "<group>"; };
+		D3790A891A13BEBA00720375 /* NetMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetMessage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,20 +109,24 @@
 				D3541AD319E5F80200934B25 /* AppDelegate.m */,
 				D356C8181A0D833100D4AA14 /* AppState.h */,
 				D356C8191A0D833100D4AA14 /* AppState.m */,
+				D3790A851A13BE6800720375 /* ByteUtil.h */,
+				D3790A861A13BE6800720375 /* ByteUtil.m */,
+				D3790A821A12D2F600720375 /* DataHandler.h */,
+				D3790A831A12D2F600720375 /* DataHandler.m */,
 				D3541AF919E6DAF000934B25 /* GlobalConstants.h */,
 				D3541ADB19E5F80200934B25 /* Images.xcassets */,
 				D3541ADD19E5F80200934B25 /* LaunchScreen.xib */,
+				D3790A881A13BEBA00720375 /* NetMessage.h */,
+				D3790A891A13BEBA00720375 /* NetMessage.m */,
 				D356C81B1A0D885400D4AA14 /* NetworkThread.h */,
 				D356C81C1A0D885400D4AA14 /* NetworkThread.m */,
 				D356C8151A0D6AEB00D4AA14 /* RemoteDevice.h */,
 				D356C8161A0D6AEB00D4AA14 /* RemoteDevice.m */,
 				D3541ACE19E5F80200934B25 /* Supporting Files */,
-				D3541AD519E5F80200934B25 /* ViewController.h */,
-				D3541AD619E5F80200934B25 /* ViewController.m */,
 				D3790A7F1A12B78900720375 /* Util.h */,
 				D3790A801A12B78900720375 /* Util.m */,
-				D3790A821A12D2F600720375 /* DataHandler.h */,
-				D3790A831A12D2F600720375 /* DataHandler.m */,
+				D3541AD519E5F80200934B25 /* ViewController.h */,
+				D3541AD619E5F80200934B25 /* ViewController.m */,
 			);
 			path = NetServiceTest;
 			sourceTree = "<group>";
@@ -204,6 +214,7 @@
 				TargetAttributes = {
 					D3541ACA19E5F80200934B25 = {
 						CreatedOnToolsVersion = 6.0.1;
+						DevelopmentTeam = 483P9MGS79;
 					};
 					D3541AE319E5F80200934B25 = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -257,11 +268,13 @@
 				D3790A841A12D2F600720375 /* DataHandler.m in Sources */,
 				D356C81D1A0D885400D4AA14 /* NetworkThread.m in Sources */,
 				D3541AD719E5F80200934B25 /* ViewController.m in Sources */,
+				D3790A8A1A13BEBA00720375 /* NetMessage.m in Sources */,
 				D3541AD419E5F80200934B25 /* AppDelegate.m in Sources */,
 				D356C81A1A0D833100D4AA14 /* AppState.m in Sources */,
 				D356C8171A0D6AEB00D4AA14 /* RemoteDevice.m in Sources */,
 				D3790A811A12B78900720375 /* Util.m in Sources */,
 				D3541AD119E5F80200934B25 /* main.m in Sources */,
+				D3790A871A13BE6900720375 /* ByteUtil.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,9 +391,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = NetServiceTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "41d163d9-be82-48b8-9f04-30d0b9b64820";
 			};
 			name = Debug;
 		};
@@ -389,9 +406,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = NetServiceTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "41d163d9-be82-48b8-9f04-30d0b9b64820";
 			};
 			name = Release;
 		};

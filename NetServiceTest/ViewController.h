@@ -18,15 +18,17 @@
     int screenHeight;
     
     UILabel* lblFoundDevicesInfo;
-    UIButton* btnJoin;
+    
     UIButton* btnDisconnect;
     UIButton* btnBrowse;
     UIButton* btnAdvertise;
     UITextField* tfMessageToSend;
     UIButton* btnSendMessage;
+    UIButton* btnSendIps;
     UIButton* btnReceive;
     UILabel* lblBytesReceived;
     UILabel* lblBytesReceivedValue;
+    UILabel* lblTimeToReceiveWholeMessage;
     UILabel* lblInfo;
 }
 
@@ -35,6 +37,7 @@
 -(void)setDeviceInfoLabelText:(NSString*)newText;
 -(void)addToInfoText:(NSString*)newText;
 -(void)setBytesReceivedValueText:(NSString*)newText;
+-(void)setSecondsElapsedForMessageCompletion:(double)seconds;
 -(void)showThatAppIsAdvertising:(bool)advertising;
 -(void)showThatAppIsBrowsing:(bool)browsing;
 
@@ -47,5 +50,6 @@
 - (void)viewControllerBrowsePressed;
 - (void)viewControllerAdvertisePressed;
 - (void)viewControllerSend:(NSString*)message;
+- (void)viewControllerSendIps;
 @end
 

@@ -14,6 +14,7 @@
 #import "AppState.h"
 #import "NetworkThread.h"
 #import "Util.h"
+#import "NetMessage.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,NSNetServiceDelegate,NSNetServiceBrowserDelegate,ViewControllerDelegate>
 {

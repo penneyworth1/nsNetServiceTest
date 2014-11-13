@@ -81,21 +81,38 @@
 {
     //NSLog(@"viewControllerDisconnectPressed");
 }
+- (void)viewControllerSendIps
+{
+    @synchronized(appState.remoteDeviceListLock)
+    {
+        for(RemoteDevice* remoteDevice in appState.remoteDevices)
+        {
+            
+            
+            
+        }
+    }
+}
 - (void)viewControllerSend:(NSString*)message
 {
     @synchronized(appState.remoteDeviceListLock)
     {
-        //TO REMOVE
+        //TESTING WITH FAKE DATA
         int sendByteArraySize = 10000000;
-        void * bytes = malloc(sendByteArraySize);
-        NSData * data = [NSData dataWithBytes:bytes length:sendByteArraySize];
+        void* bytes = malloc(sendByteArraySize);
+        NSData* data = [NSData dataWithBytes:bytes length:sendByteArraySize];
+        
+        NetMessage* netMessage = [[NetMessage alloc] init];
+        netMessage.messageType = MESSAGE_TYPE_JSON;
+        netMessage.payload = data;
         
         for(RemoteDevice* remoteDevice in appState.remoteDevices)
         {
-            [remoteDevice addDataToSend:data];
+            //[remoteDevice addDataToSend:data];
+            [remoteDevice sendMessage:netMessage];
         }
         
-        //TO REMOVE
+        //TESTING WITH FAKE DATA
         free(bytes);
     }
     

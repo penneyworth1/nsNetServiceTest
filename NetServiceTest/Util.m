@@ -31,4 +31,14 @@
     });
 }
 
++(void)setSecondsLabel:(double)seconds
+{
+    AppState* appState = [AppState getInstance];
+    ViewController* vc = (ViewController*)appState.viewControllerReference;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [vc setSecondsElapsedForMessageCompletion:seconds];
+    });
+}
+
 @end

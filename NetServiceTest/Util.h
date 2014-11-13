@@ -14,5 +14,6 @@
 
 +(void)addToInfoLabel:(NSString*)newText;
 +(void)setBytesReadLabel:(long)bytesRead;
++(void)setSecondsLabel:(double)seconds;
 
 @end

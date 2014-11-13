@@ -7,6 +7,8 @@
 //
 
 #import "RemoteDevice.h"
+#import "AppState.h"
+#include "DataHandler.h"
 
 @implementation RemoteDevice
 
@@ -21,6 +23,7 @@
         bytesToWrite = [[NSMutableData alloc] init];
         bytesReceived = [[NSMutableData alloc] init];
         sendLock = [[NSObject alloc] init];
+        dataHandler = [[DataHandler alloc] init];
     }
     return self;
 }
@@ -47,6 +50,19 @@
     //[self sendSomeData];
 }
 
+-(void)sendMessage:(NetMessage*)netMessage
+{
+    @synchronized(sendLock)
+    {
+        [dataHandler addNewOutboundMessageToQueue:netMessage];
+        if([bytesToWrite length] == 0)
+        {
+            NSData* nextMessage = [dataHandler dequeueNextOutboundMessage];
+            [bytesToWrite appendBytes:[nextMessage bytes] length:nextMessage.length];
+        }
+    }
+}
+
 -(void)sendSomeData
 {
     @synchronized(sendLock)
@@ -56,6 +72,11 @@
         {
             //NSLog(@"%ld bytes written - %@",(long)bytesWritten,self.service.name);
             [bytesToWrite replaceBytesInRange:NSMakeRange(0, bytesWritten) withBytes:NULL length:0];
+        }
+        if([bytesToWrite length] == 0)
+        {
+            NSData* nextMessage = [dataHandler dequeueNextOutboundMessage];
+            [bytesToWrite appendBytes:[nextMessage bytes] length:nextMessage.length];
         }
     }
 }
@@ -76,6 +97,14 @@
     if(bytesRead>0)
     {
         [Util setBytesReadLabel:bytesRead];
+        
+        self.lastReceivedDataChunk = [NSData dataWithBytes:buf length:bytesRead];
+        NSMutableArray* completedPayloads = [dataHandler addDataForIncomingMessages:self.lastReceivedDataChunk];
+        for(int i=0;i<completedPayloads.count;i++)
+        {
+            //NSData* data = [completedPayloads objectAtIndex:i];
+            
+        }
         return true;
     }
     else

@@ -42,7 +42,9 @@
                         [remoteDevice sendSomeData];
                     }
                     if([remoteDevice receiveSomeData])
+                    {
                         foundWorkToDo = true;
+                    }
                 }
             }
         
